@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<?import javafx.scene.layout.StackPane?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.*?>
+	
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UXController" fx:id = "stackpane" >
+<padding>
+        <Insets top = "25" right = "25" bottom = "10" left = "25" />
+    </padding>
+<VBox spacing = "20">
+<HBox spacing = "30" >
+<HBox spacing = "10">
+<RadioButton text = "Check for Initial Push" fx:id = "rbtnInit"></RadioButton>
+</HBox>
+<HBox spacing = "10">
+<RadioButton text = "Check for Updated Push" fx:id = "rbtnUpd"></RadioButton>
+</HBox>
+</HBox>
+<HBox spacing = "10">
+<Label text = "Select Facility" />
+       <ChoiceBox value="Select" fx:id = "facilityID">
+    </ChoiceBox>
+</HBox>
+<HBox spacing = "200">
+<Button text = "Upload to Server" fx:id = "btnUpl" onAction = "#OnUploadButtonClicked" />
+<Button text = "Test Connection" fx:id = "btnTstCon" onAction = "#OnTestConnectButtonClicked" />
+</HBox>
+<HBox fx:id = "piContainer" spacing = "10">
+<ProgressIndicator fx:id = "progressBar"></ProgressIndicator>
+<Label fx:id = "description"></Label>
+</HBox>
+</VBox>
+</StackPane>
