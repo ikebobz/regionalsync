@@ -38,11 +38,13 @@ private HBox hbox;
 Label description;
 Connection insertcon;
 int facility_id;
+private int errorCount;
 Hashtable<String,String> errors = new Hashtable<>();
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		this.errorCount = 0;
 		this.errors.clear();
 		this.uploadPatientData();
 		this.uploadVisitData();
@@ -58,6 +60,13 @@ Hashtable<String,String> errors = new Hashtable<>();
 		this.uploadTestData();
 		this.uploadResultData();
 		this.uploadStatusData();
+		this.uploadPrepClinicData();
+		this.uploadPrepEligibilityData();
+		this.uploadPrepEnrollmentData();
+		this.uploadPrepInterruptionData();
+		this.uploadHTSClientData();
+		this.uploadHTSElicitationData();
+		this.uploadHTSStratificationData();
 		this.alertOnComplete();
 		try {
 			if(!insertcon.isClosed())
@@ -69,6 +78,7 @@ Hashtable<String,String> errors = new Hashtable<>();
 			e.printStackTrace();
 		}
 		this.logErrors();
+		if(this.errorCount == 0)
 		this.updatePropertyFile();
 		
 	}
@@ -219,10 +229,12 @@ public void uploadPatientData()
 		         prepstmt.setBoolean(29, rs.getBoolean(29));
 		         prepstmt.setString(30, rs.getString(30));
 		         prepstmt.setInt(31, rs.getInt(31));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
+		       
 		       con.close();
 		       //insertcon.close();
 		    }
@@ -230,6 +242,7 @@ public void uploadPatientData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Patient Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -271,9 +284,10 @@ public void uploadVisitData()
 		         prepstmt.setDate(8, rs.getDate(8));
 		         prepstmt.setString(9, rs.getString(9));
 		         prepstmt.setInt(10, rs.getInt(10));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -285,7 +299,7 @@ public void uploadVisitData()
 	{
 	System.out.println(ex.getMessage());
 	errors.put("Visit Data", ex.getMessage());
-		
+	this.errorCount++;	
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -333,9 +347,10 @@ public void uploadTriageData()
 		         prepstmt.setDouble(15, rs.getDouble(15));
 		         prepstmt.setInt(16, rs.getInt(16));
 		         prepstmt.setString(17, rs.getString(17));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -347,6 +362,7 @@ public void uploadTriageData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Triage Data", ex.getMessage());
+	this.errorCount++;
 	}
 	//this.updatePropertyFile();
 	this.updateProgressBar();
@@ -412,9 +428,10 @@ public void uploadEnrollmentData()
 		         prepstmt.setInt(33, rs.getInt(33));
 		         prepstmt.setInt(34, rs.getInt(34));
 		         prepstmt.setString(35, rs.getString(35));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -426,6 +443,7 @@ public void uploadEnrollmentData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Enrollment Data", ex.getMessage());
+	this.errorCount++;
 	}
 	//this.updatePropertyFile();
 	this.updateProgressBar();
@@ -509,9 +527,10 @@ public void uploadEncounterData()
 		         prepstmt.setInt(51, rs.getInt(51));
 		         prepstmt.setObject(52, rs.getObject(52));
 		         prepstmt.setString(53, rs.getString(53));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		      // insertcon.close();
@@ -522,7 +541,8 @@ public void uploadEncounterData()
 	catch(Exception ex)
 	{
 	System.out.println(ex.getMessage());	
-	errors.put("Clinic Data", ex.getMessage());	
+	errors.put("Clinic Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -580,9 +600,10 @@ public void uploadPharmacyData()
 		         prepstmt.setString(25, rs.getString(25));
 		         prepstmt.setObject(26, rs.getObject(26));
 		         prepstmt.setString(27, rs.getString(27));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -594,6 +615,7 @@ public void uploadPharmacyData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Pharmacy Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -666,9 +688,10 @@ public void uploadObservationData()
 		         prepstmt.setString(10, rs.getString(10));
 		         prepstmt.setObject(11, rs.getObject(11));
 		         prepstmt.setInt(12, rs.getInt(12));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -678,7 +701,8 @@ public void uploadObservationData()
 	catch(Exception ex)
 	{
 	System.out.println(ex.getMessage());	
-	errors.put("Observation Data", ex.getMessage());	
+	errors.put("Observation Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -688,8 +712,8 @@ public void uploadBiometricData()
 	String sql = "SELECT  id,created_date, created_by, last_modified_date, last_modified_by, facility_id, person_uuid, template, biometric_type, template_type, enrollment_date, archived, iso, extra, device_name, reason, version_iso_20, image_quality, recapture, recapture_message, hashed, count\r\n"
 			+ "	FROM public.biometric where last_modified_date >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
 	String insertsql = "INSERT INTO public.biometric(\r\n"
-			+ "	id, created_date, created_by, last_modified_date, last_modified_by, facility_id, person_uuid, template, biometric_type, template_type, enrollment_date, archived, iso, extra, device_name, reason, version_iso_20, image_quality, recapture, recapture_message, hashed, count)\r\n"
-			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "	uuid, created_date, created_by, last_modified_date, last_modified_by, facility_id, person_uuid, template, biometric_type, template_type, enrollment_date, archived, iso, extra, device_name, reason, version_iso_20, image_quality, recapture, recapture_message, hashed, count)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	try{
 		
 		Connection con = DriverManager.getConnection
@@ -730,9 +754,10 @@ public void uploadBiometricData()
 		         prepstmt.setString(20, rs.getString(20));
 		         prepstmt.setString(21, rs.getString(21));
 		         prepstmt.setInt(22, rs.getInt(22));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -743,6 +768,7 @@ public void uploadBiometricData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Biometric Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -790,9 +816,10 @@ public void uploadEacData()
 		         prepstmt.setString(15, rs.getString(15));
 		         prepstmt.setString(16, rs.getString(16));
 		         prepstmt.setString(17, rs.getString(17));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -802,7 +829,8 @@ public void uploadEacData()
 	catch(Exception ex)
 	{
 	System.out.println(ex.getMessage());	
-	errors.put("eac Data", ex.getMessage());	
+	errors.put("eac Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -810,7 +838,7 @@ public void uploadEacData()
 public void uploadEacSessionData()
 {
 	String sql = "SELECT created_date, created_by, last_modified_date, last_modified_by, facility_id, eac_id, person_uuid, visit_id, barriers, intervention, barriers_others, intervention_others, comment, follow_up_date, eac_session_date, referral, adherence, uuid, status, archived\r\n"
-			+ "	FROM public.hiv_eac_session where last_modified_date >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+			+ "	FROM public.hiv_eac_session where last_modified_date >= '"+this.lastUpdate+"'"+" and person_uuid in (select uuid from patient_person where facility_id ="+this.facility_id+")";
 	String insertsql = "INSERT INTO public.hiv_eac_session(\r\n"
 			+ "	created_date, created_by, last_modified_date, last_modified_by, facility_id, eac_id, person_uuid, visit_id, barriers, intervention, barriers_others, intervention_others, comment, follow_up_date, eac_session_date, referral, adherence, uuid, status, archived)\r\n"
 			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -853,9 +881,10 @@ public void uploadEacSessionData()
 		         prepstmt.setString(18, rs.getString(18));
 		         prepstmt.setString(19, rs.getString(19));
 		         prepstmt.setInt(20, rs.getInt(20));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -866,6 +895,7 @@ public void uploadEacSessionData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("eac_session Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -918,9 +948,10 @@ public void uploadSampleData()
 		         prepstmt.setString(20, rs.getString(20));
 		         prepstmt.setDate(21, rs.getDate(21));
 		         prepstmt.setInt(22, rs.getInt(22));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -931,7 +962,7 @@ public void uploadSampleData()
 	{
 	System.out.println(ex.getMessage());
 	errors.put("Test sample Data", ex.getMessage());
-		
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -981,9 +1012,10 @@ public void uploadTestData()
 		         prepstmt.setString(16, rs.getString(16));
 		         prepstmt.setDate(17, rs.getDate(17));
 		         prepstmt.setInt(18, rs.getInt(18));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -994,7 +1026,7 @@ public void uploadTestData()
 	{
 	System.out.println(ex.getMessage());
 	errors.put("Test Data", ex.getMessage());
-		
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -1051,9 +1083,10 @@ public void uploadResultData()
 		         prepstmt.setDate(23, rs.getDate(23));
 		         prepstmt.setString(24, rs.getString(24));
 		         prepstmt.setString(25, rs.getString(25));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -1064,6 +1097,7 @@ public void uploadResultData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Test Result Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
@@ -1113,9 +1147,10 @@ public void uploadStatusData()
                  prepstmt.setInt(17, rs.getInt(17));
                  prepstmt.setString(18, rs.getString(18));
                  prepstmt.setString(19, rs.getString(19));
-		         prepstmt.executeUpdate();
+		         prepstmt.addBatch();
 		         
 		       }
+		       prepstmt.executeBatch();
 		       rs.close();
 		       con.close();
 		       //insertcon.close();
@@ -1126,8 +1161,534 @@ public void uploadStatusData()
 	{
 	System.out.println(ex.getMessage());	
 	errors.put("Status Tracker Data", ex.getMessage());
+	this.errorCount++;
 	}
 	this.updateProgressBar();
 	//this.updatePropertyFile();
 }
+public void uploadPrepClinicData()
+{
+	String sql = "SELECT weight, height, pulse, temperature, respiratory_rate, systolic, diastolic, adherence_level, sti_screening, date_prep_start, date_prep_given, prep_given, other_drugs, hiv_test_result, encounter_date, is_commencement, prep_enrollment_uuid, uuid, regimen_id, regimen_type_id, duration, vital_sign_uuid, person_uuid, visit_uuid, next_appointment, why, dateprepgiven, urinalysis, hepatitis, syphilis, other_tests_done, syndromic_sti_screening, date_initial_adherence_counseling, date_referred, referred, urinalysis_result, pregnant, facility_id, extra, risk_reduction_services, noted_side_effects, created_by, date_created, modified_by, date_modified, archived\r\n"
+			+ "	FROM public.prep_clinic where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.prep_clinic(\r\n"
+			+ "	weight, height, pulse, temperature, respiratory_rate, systolic, diastolic, adherence_level, sti_screening, date_prep_start, date_prep_given, prep_given, other_drugs, hiv_test_result, encounter_date, is_commencement, prep_enrollment_uuid, uuid, regimen_id, regimen_type_id, duration, vital_sign_uuid, person_uuid, visit_uuid, next_appointment, why, dateprepgiven, urinalysis, hepatitis, syphilis, other_tests_done, syndromic_sti_screening, date_initial_adherence_counseling, date_referred, referred, urinalysis_result, pregnant, facility_id, extra, risk_reduction_services, noted_side_effects, created_by, date_created, modified_by, date_modified, archived)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading Prep Clinic Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         //prepstmt.setInt(1, rs.getInt(1));
+		         prepstmt.setDouble(1, rs.getDouble(1));
+		         prepstmt.setDouble(2, rs.getDouble(2));
+		         prepstmt.setDouble(3, rs.getDouble(3));
+		         prepstmt.setDouble(4, rs.getDouble(4));
+		         prepstmt.setDouble(5, rs.getDouble(5));
+		         prepstmt.setDouble(6, rs.getDouble(6));
+		         prepstmt.setDouble(7, rs.getDouble(7));
+		         prepstmt.setString(8, rs.getString(8));
+		         prepstmt.setBoolean(9, rs.getBoolean(9));
+				 prepstmt.setDate(10, rs.getDate(10));
+				 prepstmt.setDate(11, rs.getDate(11));
+				 prepstmt.setString(12, rs.getString(12));
+		         prepstmt.setString(13, rs.getString(13));
+		         prepstmt.setString(14, rs.getString(14));
+		         prepstmt.setDate(15, rs.getDate(15));
+		         prepstmt.setBoolean(16, rs.getBoolean(16));
+		         prepstmt.setString(17, rs.getString(17));
+		         prepstmt.setString(18, rs.getString(18));
+		         prepstmt.setInt(19, rs.getInt(19));
+		         prepstmt.setInt(20, rs.getInt(20));
+		         prepstmt.setInt(21, rs.getInt(21));
+		         prepstmt.setString(22, rs.getString(22));
+		         prepstmt.setString(23, rs.getString(23));
+		         prepstmt.setString(24, rs.getString(24));
+		         prepstmt.setDate(25, rs.getDate(25));
+		         prepstmt.setBoolean(26, rs.getBoolean(26));
+		         prepstmt.setDate(27, rs.getDate(27));
+		         prepstmt.setObject(28, rs.getObject(28));
+		    	 prepstmt.setObject(29, rs.getObject(29));
+		    	 prepstmt.setObject(30, rs.getObject(30));
+		    	 prepstmt.setObject(31, rs.getObject(31));
+		    	 prepstmt.setObject(32, rs.getObject(32));
+		    	 prepstmt.setDate(33, rs.getDate(33));
+		    	 prepstmt.setDate(34, rs.getDate(34));
+		    	 prepstmt.setBoolean(35, rs.getBoolean(35));
+		         prepstmt.setString(36, rs.getString(36));
+		         prepstmt.setString(37, rs.getString(37));
+		         prepstmt.setInt(38, rs.getInt(38));
+		         prepstmt.setObject(39, rs.getObject(39));
+		         prepstmt.setString(40, rs.getString(40));
+		         prepstmt.setString(41, rs.getString(41));
+		         prepstmt.setString(42, rs.getString(42));
+		         prepstmt.setDate(43, rs.getDate(43));
+		         prepstmt.setString(44, rs.getString(44));
+		         prepstmt.setDate(45, rs.getDate(45));
+		         prepstmt.setInt(46, rs.getInt(46));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("Prep Clinic Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadPrepEligibilityData()
+{
+	String sql = "SELECT uuid, unique_id, score, visit_date, hiv_risk, sti_screening, drug_use_history, personal_hiv_risk_assessment, sex_partner_risk, person_uuid, sex_partner, counseling_type, first_time_visit, num_children_less_than_five, num_wives, target_group, extra, facility_id, archived, created_by, date_created, modified_by, date_modified\r\n"
+			+ "	FROM public.prep_eligibility where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.prep_eligibility(\r\n"
+			+ "	uuid, unique_id, score, visit_date, hiv_risk, sti_screening, drug_use_history, personal_hiv_risk_assessment, sex_partner_risk, person_uuid, sex_partner, counseling_type, first_time_visit, num_children_less_than_five, num_wives, target_group, extra, facility_id, archived, created_by, date_created, modified_by, date_modified)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading Prep Eligibility Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         prepstmt.setString(1, rs.getString(1));
+		    	 prepstmt.setString(2, rs.getString(2));
+		    	 prepstmt.setInt(3, rs.getInt(3));
+		    	 prepstmt.setDate(4, rs.getDate(4));
+		    	 prepstmt.setObject(5, rs.getObject(5));
+		    	 prepstmt.setObject(6, rs.getObject(6));
+		    	 prepstmt.setObject(7, rs.getObject(7));
+		    	 prepstmt.setObject(8, rs.getObject(8));
+		    	 prepstmt.setObject(9, rs.getObject(9));
+		         prepstmt.setString(10, rs.getString(10));
+		         prepstmt.setString(11, rs.getString(11));
+		         prepstmt.setString(12, rs.getString(12));
+				 prepstmt.setBoolean(13, rs.getBoolean(13));
+		         prepstmt.setString(14, rs.getString(14));
+		         prepstmt.setInt(15, rs.getInt(15));
+		         prepstmt.setString(16, rs.getString(16));
+		         prepstmt.setObject(17, rs.getObject(17));
+		         prepstmt.setInt(18, rs.getInt(18));
+		         prepstmt.setInt(19, rs.getInt(19));
+		         prepstmt.setString(20, rs.getString(20));
+		         prepstmt.setDate(21, rs.getDate(21));
+		         prepstmt.setString(22, rs.getString(22));
+		         prepstmt.setDate(23, rs.getDate(23));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("Prep Eligibility Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadPrepEnrollmentData()
+{
+	String sql = "SELECT unique_id, target_group, uuid, date_started, person_uuid, visit_uuid, extra, facility_id, prep_eligibility_uuid, status, date_enrolled, date_referred, risk_type, supporter_phone, supporter_name, supporter_relationship_type, anc_unique_art_no, hiv_testing_point, date_last_hiv_negative_test, archived, created_by, date_created, modified_by, date_modified\r\n"
+			+ "	FROM public.prep_enrollment where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.prep_enrollment(\r\n"
+			+ "	unique_id, target_group, uuid, date_started, person_uuid, visit_uuid, extra, facility_id, prep_eligibility_uuid, status, date_enrolled, date_referred, risk_type, supporter_phone, supporter_name, supporter_relationship_type, anc_unique_art_no, hiv_testing_point, date_last_hiv_negative_test, archived, created_by, date_created, modified_by, date_modified)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading Prep Enrollment Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         
+		         prepstmt.setString(1, rs.getString(1));
+				 prepstmt.setString(2, rs.getString(2));
+		         prepstmt.setString(3, rs.getString(3));
+		         prepstmt.setDate(4, rs.getDate(4));
+		         prepstmt.setString(5, rs.getString(5));
+		         prepstmt.setString(6, rs.getString(6));
+		         prepstmt.setObject(7, rs.getObject(7));
+		         prepstmt.setInt(8, rs.getInt(8));
+		         prepstmt.setString(9, rs.getString(9));
+		         prepstmt.setString(10, rs.getString(10));
+		         prepstmt.setDate(11, rs.getDate(11));
+		         prepstmt.setDate(12, rs.getDate(12));
+		         prepstmt.setString(13, rs.getString(13));
+		         prepstmt.setString(14, rs.getString(14));
+		         prepstmt.setString(15, rs.getString(15));
+		         prepstmt.setString(16, rs.getString(16));
+		         prepstmt.setString(17, rs.getString(17));
+		         prepstmt.setString(18, rs.getString(18));
+		         prepstmt.setDate(19, rs.getDate(19));
+		         prepstmt.setInt(20, rs.getInt(20));
+		         prepstmt.setString(21, rs.getString(21));
+		         prepstmt.setDate(22, rs.getDate(22));
+		         prepstmt.setString(23, rs.getString(23));
+		         prepstmt.setDate(24, rs.getDate(24));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("Prep Enrollment Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadPrepInterruptionData()
+{
+	String sql = "SELECT uuid, person_uuid, prep_enrollment_uuid, interruption_type, interruption_date, date_client_died, cause_of_death, source_of_death_info, date_client_referred_out, facility_referred_to, interruption_reason, extra, facility_id, archived, created_by, date_created, modified_by, date_sero_converted, date_restart_placed_back_medication, link_to_art, encounter_date, date_modified, reason_stopped, reason_stopped_others\r\n"
+			+ "	FROM public.prep_interruption where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.prep_interruption(\r\n"
+			+ "	uuid, person_uuid, prep_enrollment_uuid, interruption_type, interruption_date, date_client_died, cause_of_death, source_of_death_info, date_client_referred_out, facility_referred_to, interruption_reason, extra, facility_id, archived, created_by, date_created, modified_by, date_sero_converted, date_restart_placed_back_medication, link_to_art, encounter_date, date_modified, reason_stopped, reason_stopped_others)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading Prep Interruption Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         prepstmt.setString(1, rs.getString(1));
+		         prepstmt.setString(2, rs.getString(2));
+		         prepstmt.setString(3, rs.getString(3));
+		         prepstmt.setString(4, rs.getString(4));
+				 prepstmt.setDate(5, rs.getDate(5));
+				 prepstmt.setDate(6, rs.getDate(6));
+		         prepstmt.setString(7, rs.getString(7));
+		         prepstmt.setString(8, rs.getString(8));
+		         prepstmt.setDate(9, rs.getDate(9));
+		         prepstmt.setString(10, rs.getString(10));
+		         prepstmt.setString(11, rs.getString(11));
+		         prepstmt.setObject(12, rs.getObject(12));
+		         prepstmt.setInt(13, rs.getInt(13));
+		         prepstmt.setInt(14, rs.getInt(14));
+		         prepstmt.setString(15, rs.getString(15));
+		         prepstmt.setDate(16, rs.getDate(16));
+		         prepstmt.setString(17, rs.getString(17));
+		         prepstmt.setDate(18, rs.getDate(18));
+		         prepstmt.setDate(19, rs.getDate(19));
+		         prepstmt.setBoolean(20, rs.getBoolean(20));
+		         prepstmt.setDate(21, rs.getDate(21));
+		         prepstmt.setDate(22, rs.getDate(22));
+		         prepstmt.setString(23, rs.getString(23));
+		         prepstmt.setString(24, rs.getString(24));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("Prep Interruption Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadHTSStratificationData()
+{
+	String sql = "SELECT code, person_uuid, age, testing_setting, modality, target_group, entry_point, community_entry_point, visit_date, dob, date_created, created_by, date_modified, modified_by, archived, facility_id, risk_assessment\r\n"
+			+ "	FROM public.hts_risk_stratification where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.hts_risk_stratification(\r\n"
+			+ "	code, person_uuid, age, testing_setting, modality, target_group, entry_point, community_entry_point, visit_date, dob, date_created, created_by, date_modified, modified_by, archived, facility_id, risk_assessment)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading Stratification Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         prepstmt.setString(1, rs.getString(1));
+		         prepstmt.setString(2, rs.getString(2));
+		         prepstmt.setString(3, rs.getString(3));
+		         prepstmt.setString(4, rs.getString(4));
+		         prepstmt.setString(5, rs.getString(5));
+		         prepstmt.setString(6, rs.getString(6));
+		         prepstmt.setString(7, rs.getString(7));
+		         prepstmt.setString(8, rs.getString(8));
+		         prepstmt.setDate(9, rs.getDate(9));
+				 prepstmt.setDate(10, rs.getDate(10));
+				 prepstmt.setDate(11, rs.getDate(11));
+		         prepstmt.setString(12, rs.getString(12));
+		         prepstmt.setDate(13, rs.getDate(13));
+		         prepstmt.setString(14, rs.getString(14));
+		         prepstmt.setInt(15, rs.getInt(15));
+		         prepstmt.setInt(16, rs.getInt(16));
+		         prepstmt.setObject(17, rs.getObject(17));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("HTS Stratification  Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadHTSElicitationData()
+{
+	String sql = "SELECT uuid, dob, is_date_of_birth_estimated, sex, address, last_name, first_name, middle_name, phone_number, alt_phone_number, hang_out_spots, physical_hurt, threaten_to_hurt, notification_method, partner_tested_positive, sexually_uncomfortable, currently_live_with_partner, relationship_with_index_client, date_partner_came_for_testing, facility_id, hts_client_uuid, date_created, created_by, date_modified, modified_by, archived, extra, offered_ins, accepted_ins\r\n"
+			+ "	FROM public.hts_index_elicitation where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.hts_index_elicitation(\r\n"
+			+ "	 uuid, dob, is_date_of_birth_estimated, sex, address, last_name, first_name, middle_name, phone_number, alt_phone_number, hang_out_spots, physical_hurt, threaten_to_hurt, notification_method, partner_tested_positive, sexually_uncomfortable, currently_live_with_partner, relationship_with_index_client, date_partner_came_for_testing, facility_id, hts_client_uuid, date_created, created_by, date_modified, modified_by, archived, extra, offered_ins, accepted_ins)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading HTS Elicitation Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         prepstmt.setString(1, rs.getString(1));
+		         prepstmt.setDate(2, rs.getDate(2));
+		         prepstmt.setBoolean(3, rs.getBoolean(3));
+		         prepstmt.setInt(4, rs.getInt(4));
+		         prepstmt.setString(5, rs.getString(5));
+		         prepstmt.setString(6, rs.getString(6));
+		         prepstmt.setString(7, rs.getString(7));
+		         prepstmt.setString(8, rs.getString(8));
+		         prepstmt.setString(9, rs.getString(9));
+		         prepstmt.setString(10, rs.getString(10));
+		         prepstmt.setString(11, rs.getString(11));
+		         prepstmt.setInt(12, rs.getInt(12));
+		         prepstmt.setInt(13, rs.getInt(13));
+		         prepstmt.setInt(14, rs.getInt(14));
+		         prepstmt.setInt(15, rs.getInt(15));
+		         prepstmt.setInt(16, rs.getInt(16));
+		         prepstmt.setBoolean(17, rs.getBoolean(17));
+		         prepstmt.setInt(18, rs.getInt(18));
+		         prepstmt.setDate(19, rs.getDate(19));
+		         prepstmt.setInt(20, rs.getInt(20));
+		         prepstmt.setString(21, rs.getString(21));
+		         prepstmt.setDate(22, rs.getDate(22));
+		         prepstmt.setString(23, rs.getString(23));
+		         prepstmt.setDate(24, rs.getDate(24));
+		         prepstmt.setString(25, rs.getString(25));
+		         prepstmt.setInt(26, rs.getInt(26));
+		         prepstmt.setObject(27, rs.getObject(27));
+		         prepstmt.setString(28, rs.getString(28));
+		         prepstmt.setString(29, rs.getString(29));
+		         prepstmt.addBatch();
+				 
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("HTS Elicitation Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+public void uploadHTSClientData()
+{
+	String sql = "SELECT  target_group, client_code, date_visit, referred_from, person_uuid, testing_setting, prep_given, other_drugs, hiv_test_result, first_time_visit, num_children, num_wives, type_counseling, index_client, prep_offered, prep_accepted, previously_tested, extra, pregnant, breast_feeding, relation_with_index_client, test1, confirmatory_test, tie_breaker_test, test2, confirmatory_test2, tie_breaker_test2, hiv_test_result2, knowledge_assessment, risk_assessment, tb_screening, sti_screening, facility_id, captured_by, uuid, hepatitis_testing, recency, syphilis_testing, index_notification_services_elicitation, post_test_counseling, sex_partner_risk_assessment, others, cd4, date_created, created_by, date_modified, modified_by, archived, index_client_code, risk_stratification_code\r\n"
+			+ "	FROM public.hts_client where date_modified >= '"+this.lastUpdate+"'"+" and facility_id="+this.facility_id;
+	String insertsql = "INSERT INTO public.hts_client(\r\n"
+			+ "	target_group, client_code, date_visit, referred_from, person_uuid, testing_setting, prep_given, other_drugs, hiv_test_result, first_time_visit, num_children, num_wives, type_counseling, index_client, prep_offered, prep_accepted, previously_tested, extra, pregnant, breast_feeding, relation_with_index_client, test1, confirmatory_test, tie_breaker_test, test2, confirmatory_test2, tie_breaker_test2, hiv_test_result2, knowledge_assessment, risk_assessment, tb_screening, sti_screening, facility_id, captured_by, uuid, hepatitis_testing, recency, syphilis_testing, index_notification_services_elicitation, post_test_counseling, sex_partner_risk_assessment, others, cd4, date_created, created_by, date_modified, modified_by, archived, index_client_code, risk_stratification_code)\r\n"
+			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	try{
+		
+		Connection con = DriverManager.getConnection
+		          (url, user, pass);
+		insertcon = DriverManager.getConnection(server,user,pass);
+		       Statement stmt = con.createStatement();
+		       PreparedStatement prepstmt = insertcon.prepareStatement(insertsql);
+		       ResultSet rs = stmt.executeQuery(sql);
+		       Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+				
+				hbox.setVisible(true);
+				description.setText("Uploading HTS Client Data......................");
+					
+				}});
+		       while (rs.next()) {
+		         prepstmt.setString(1, rs.getString(1));
+		         prepstmt.setString(2, rs.getString(2));
+		         prepstmt.setDate(3, rs.getDate(3));
+		         prepstmt.setInt(4, rs.getInt(4));
+				 prepstmt.setString(5, rs.getString(5));
+				 prepstmt.setString(6, rs.getString(6));
+		         prepstmt.setString(7, rs.getString(7));
+		         prepstmt.setString(8, rs.getString(8));
+		         prepstmt.setString(9, rs.getString(9));
+		         prepstmt.setBoolean(10, rs.getBoolean(10));
+		         prepstmt.setInt(11, rs.getInt(11));
+		         prepstmt.setInt(12, rs.getInt(12));
+		         prepstmt.setInt(13, rs.getInt(13));
+		         prepstmt.setBoolean(14, rs.getBoolean(14));
+		         prepstmt.setBoolean(15, rs.getBoolean(15));
+		         prepstmt.setBoolean(16, rs.getBoolean(16));
+		         prepstmt.setBoolean(17, rs.getBoolean(17));
+		         prepstmt.setObject(18, rs.getObject(18));
+		         prepstmt.setInt(19, rs.getInt(19));
+		         prepstmt.setBoolean(20, rs.getBoolean(20));
+		         prepstmt.setInt(21, rs.getInt(21));
+		         prepstmt.setObject(22, rs.getObject(22));
+		         prepstmt.setObject(23, rs.getObject(23));
+		         prepstmt.setObject(24, rs.getObject(24));
+		         prepstmt.setObject(25, rs.getObject(25));
+		         prepstmt.setObject(26, rs.getObject(26));
+		         prepstmt.setObject(27, rs.getObject(27));
+		         prepstmt.setString(28, rs.getString(28));
+		         prepstmt.setObject(29, rs.getObject(29));
+		         prepstmt.setObject(30, rs.getObject(30));
+		         prepstmt.setObject(31, rs.getObject(31));
+		         prepstmt.setObject(32, rs.getObject(32));
+		         prepstmt.setInt(33, rs.getInt(33));
+		         prepstmt.setString(34, rs.getString(34));
+		         prepstmt.setString(35, rs.getString(35));
+		         prepstmt.setObject(36, rs.getObject(36));
+		         prepstmt.setObject(37, rs.getObject(37));
+		         prepstmt.setObject(38, rs.getObject(38));
+		         prepstmt.setObject(39, rs.getObject(39));
+		         prepstmt.setObject(40, rs.getObject(40));
+		         prepstmt.setObject(41, rs.getObject(41));
+		         prepstmt.setObject(42, rs.getObject(42));
+		         prepstmt.setObject(43, rs.getObject(43));
+		         prepstmt.setDate(44, rs.getDate(44));
+		         prepstmt.setString(45, rs.getString(45));
+		         prepstmt.setDate(46, rs.getDate(46));
+		         prepstmt.setString(47, rs.getString(47));
+		         prepstmt.setInt(48, rs.getInt(48));
+		         prepstmt.setString(49, rs.getString(49));
+		         prepstmt.setString(50, rs.getString(50));
+		         prepstmt.addBatch();
+		         
+		       }
+		       prepstmt.executeBatch();
+		       rs.close();
+		       con.close();
+		       //insertcon.close();
+		       
+		       
+	}
+	catch(Exception ex)
+	{
+	System.out.println(ex.getMessage());	
+	errors.put("HTS Client Data", ex.getMessage());
+	this.errorCount++;
+	}
+	this.updateProgressBar();
+	//this.updatePropertyFile();
+}
+
 }

@@ -156,8 +156,9 @@ private void testConnection()
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			if(UXController.isReachable(host, 80, 10000))
+			if(UXController.isReachable(host, 3389, 10000))
 				UXController.serverState = "Server is Online";
+			else UXController.serverState = "Server is Offline";
 			 Platform.runLater(new Runnable() {
 
 					@Override
@@ -167,6 +168,7 @@ private void testConnection()
 						notice.show();
 						if(UXController.serverState.equalsIgnoreCase("Server is online"))
 							btnUpl.setDisable(false);
+						else btnUpl.setDisable(true);
 						    piContainer.setVisible(false);
 						
 					    

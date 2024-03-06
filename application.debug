@@ -10,3 +10,16 @@
 2023-12-22:19:42:14: Test Result Data ---- ERROR: column "ldate_modified" does not exist
   Hint: Perhaps you meant to reference the column "laboratory_result.date_modified".
   Position: 429
+2024-01-03:17:03:59: Prep Eligibility Data ---- ERROR: column "last_modified_date" does not exist
+  Position: 370
+2024-01-03:17:03:59: Prep Interruption Data ---- ERROR: column "last_modified_date" does not exist
+  Position: 459
+2024-01-03:17:03:59: Prep Enrollment Data ---- ERROR: column "last_modified_date" does not exist
+  Position: 398
+2024-01-03:17:03:59: Prep Clinic Data ---- ERROR: column "last_modified_date" does not exist
+  Position: 696
+2024-01-03:17:08:37: Biometric Data ---- ERROR: duplicate key value violates unique constraint "pk_biometric"
+  Detail: Key (id)=(55af33a3-9ca7-464f-8086-56458676ac86) already exists.
+2024-01-05:11:39:48: Pharmacy Data ---- ERROR: null value in column "next_appointment" of relation "hiv_art_pharmacy" violates not-null constraint
+  Detail: Failing row contains (8166, 2019-08-27 00:00:00, ETL, 2023-10-07 00:00:00, guest@lamisplus.org, 1933, ba4a008f-6ad7-4fdc-a55b-639e94dc240e, ef43fc5b-19e4-46fc-b1d9-6e2dd1bd1ada, 2013-02-07, f, f, f, null, 9b26b046-564a-411c-9015-199f6a6a6809, null, {"regimens": [{"name": "AZT(300mg)+3TC(150mg)+LPV/r(200/50mg)", ..., null, f, 60, null, null, null, null, null, 1, null, null, null).
+2024-01-20:21:21:58: HTS Client Data ---- Bad value for type timestamp/date/time: guest@lamisplus.org

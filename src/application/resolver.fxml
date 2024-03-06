@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<?import javafx.scene.layout.StackPane?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.*?>
+
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Resolver" fx:id = "stackpane">
+<padding>
+        <Insets top = "25" right = "10" bottom = "10" left = "10" />
+    </padding>
+ <VBox spacing = "20">
+ <HBox spacing = "100">
+ <RadioButton text = "Chronic Care not saving" fx:id = "rbtn1"></RadioButton>
+ <HBox spacing = "10">
+ <Label>Specify Hospital Number:</Label>
+ <TextField fx:id = "hnumber"></TextField>
+ </HBox>
+ </HBox>
+ <Separator></Separator>
+ <VBox spacing = "20">
+ <RadioButton text = "Chronic Care not updating" fx:id = "rbtn2"></RadioButton>
+ <HBox spacing = "10">
+ <Label>Firstname</Label>
+ <TextField fx:id = "fname"></TextField>
+ </HBox>
+ <HBox spacing = "18">
+ <Label>LastName</Label>
+ <TextField fx:id = "sname"></TextField>
+ </HBox>
+ </VBox>
+ <Separator></Separator>
+ <HBox spacing = "20">
+ <RadioButton text = "Patient loading in endless loop" fx:id = "rbtn3"></RadioButton>
+ </HBox>
+ <Separator></Separator>
+ <HBox spacing = "20">
+ <RadioButton text = "Resolve NDR issues" fx:id = "rbtn4"></RadioButton>
+ </HBox>
+ <Separator></Separator>
+ <VBox spacing = "20">
+ <RadioButton text = "Delete refills" fx:id = "rbtn5"></RadioButton>
+ <HBox spacing = "10">
+ <Label>Hospital Number:</Label>
+ <TextField fx:id = "hnumber1"></TextField>
+ </HBox>
+ <HBox spacing = "8">
+ <Label>Date(YYYY-MM-DD):</Label>
+ <TextField fx:id = "refill_date"></TextField>
+ </HBox>
+ </VBox>
+ <Separator></Separator>
+ <HBox spacing = "20">
+ <RadioButton text = "ART loading in endless loop" fx:id = "rbtn6"></RadioButton>
+ </HBox>
+ <Separator></Separator>
+ <HBox spacing = "20">
+ <RadioButton text = "Clear Biometric XML Extraction logs" fx:id = "rbtn7"></RadioButton>
+ </HBox>
+ <Separator></Separator>
+ <HBox spacing = "15">
+ <Button text = "Resolve" onAction = "#OnResolveButtonClicked"></Button>
+ <Label  fx:id = "feedback">Executing query.....................</Label>
+ </HBox>
+ </VBox>
+
+</StackPane>
