@@ -10,20 +10,23 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 public class Resolver {
 	
 @FXML
-RadioButton rbtn1,rbtn2,rbtn3,rbtn4,rbtn5,rbtn6,rbtn7;
+RadioButton rbtn1,rbtn2,rbtn3,rbtn4,rbtn5,rbtn6,rbtn7,rbtn8;
 
 @FXML
-TextField hnumber,hnumber1,fname,sname,refill_date;
+TextField hnumber,hnumber1,fname,sname,refill_date,hnumber_rc;
 
 @FXML
 Label feedback;
@@ -32,11 +35,14 @@ static String host,user,pass;
 
 static String hospnumber,firstname,lastname,date_refill;
 
+private ToggleGroup group;
+
 
 @FXML
 private void initialize()
 {
-this.feedback.setVisible(false);	
+this.feedback.setVisible(false);
+this.setupRadioButtons();
 
 }
 private void alertOnComplete(int rows)
@@ -258,6 +264,40 @@ protected void executeQuery()
 			}});
 		runner.start();
  };
+ if(rbtn8.isSelected()) {
+	 
+	 if(hnumber_rc.getText().equals("") || hnumber_rc.getText().isEmpty())
+		{
+			Alert info = new Alert(AlertType.INFORMATION);
+			info.setHeaderText("Please supply a hospital Number");
+			info.show();
+			return;
+		}
+		hospnumber = hnumber_rc.getText();
+		this.feedback.setVisible(true);
+		Thread runner = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Connection insertcon;
+				try {
+					insertcon = DriverManager.getConnection(host,user,pass);
+					PreparedStatement prepstmt = insertcon.prepareStatement(Queries.unArchiveStatus);
+					prepstmt.setString(1,hospnumber);
+					prepstmt.setInt(2,0);
+					int rows = prepstmt.executeUpdate();
+					alertOnComplete(rows);
+					insertcon.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}});
+		runner.start(); 
+	 
+ }
  
 
 
@@ -287,4 +327,55 @@ private void OnResolveButtonClicked()
 	this.getDatabaseCredentials();
 	this.executeQuery();
 }
+
+@FXML
+private void unlockDashClicked()
+{
+	this.getDatabaseCredentials();
+	if(hnumber_rc.getText().equals("") || hnumber_rc.getText().isEmpty())
+	{
+		Alert info = new Alert(AlertType.INFORMATION);
+		info.setHeaderText("Please supply a hospital Number");
+		info.show();
+		return;
+	}
+	hospnumber = hnumber_rc.getText();
+	this.feedback.setVisible(true);
+	Thread runner = new Thread(new Runnable() {
+
+		@Override
+		public void run() {
+			Connection insertcon;
+			try {
+				insertcon = DriverManager.getConnection(host,user,pass);
+				PreparedStatement prepstmt = insertcon.prepareStatement(Queries.ISSUE8);
+				prepstmt.setString(1,hospnumber);
+				prepstmt.setInt(2,1);
+				int rows = prepstmt.executeUpdate();
+				alertOnComplete(rows);
+				insertcon.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}});
+	runner.start();
+
+}
+private void setupRadioButtons()
+{
+ 
+	this.group = new ToggleGroup();
+	rbtn1.setToggleGroup(group);
+	rbtn2.setToggleGroup(group);
+	rbtn3.setToggleGroup(group);
+	rbtn4.setToggleGroup(group);
+	rbtn5.setToggleGroup(group);
+	rbtn6.setToggleGroup(group);
+	rbtn7.setToggleGroup(group);
+	rbtn8.setToggleGroup(group);
+}
+
 }

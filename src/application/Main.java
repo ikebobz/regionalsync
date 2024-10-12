@@ -42,7 +42,7 @@ public class Main extends Application {
 	{
 		try {
 			StackPane root = (StackPane)FXMLLoader.load(getClass().getResource("resolver.fxml"));
-			Scene scene = new Scene(root,700,700);
+			Scene scene = new Scene(root,700,800);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("Resolver v1.0");
 			primaryStage.getIcons().add(new Image("file:resolver.jpg"));

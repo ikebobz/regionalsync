@@ -10,6 +10,8 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.collections.*?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
 
 
 <StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Resolver" fx:id = "stackpane">
@@ -64,6 +66,15 @@
  <HBox spacing = "20">
  <RadioButton text = "Clear Biometric XML Extraction logs" fx:id = "rbtn7"></RadioButton>
  </HBox>
+ <Separator></Separator>
+ <VBox spacing = "30">
+ <RadioButton text = "Refill Returning Client" fx:id = "rbtn8"></RadioButton>
+ <HBox spacing = "10">
+ <Label>Specify Hospital Number:</Label>
+ <TextField fx:id = "hnumber_rc"></TextField>
+ <Button text = "Unlock Dashboard" onAction = "#unlockDashClicked"></Button>
+ </HBox>
+ </VBox>
  <Separator></Separator>
  <HBox spacing = "15">
  <Button text = "Resolve" onAction = "#OnResolveButtonClicked"></Button>

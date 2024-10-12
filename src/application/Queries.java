@@ -63,4 +63,12 @@ public class Queries {
 	public static final String ISSUE5 ="Update hiv_art_pharmacy set archived = 1 where person_uuid in (select uuid from patient_person where hospital_number ilike ?)and visit_date = ?";
 	public static final String ISSUE6 ="delete from hiv_art_pharmacy where refill_period is null and next_appointment is null";
 	public static final String ISSUE7 = "delete from ndr_message_log where file_type='recaptured-biometric'";
+	public static final String ISSUE8 = "with targetuuid as (select hst.uuid from patient_person p inner join\r\n"
+			+ "hiv_status_tracker hst on p.uuid = hst.person_id where hospital_number = ? order by status_date desc limit 1)\r\n"
+			+ "update hiv_status_tracker st set archived = ? from targetuuid t\r\n"
+			+ "where st.uuid = t.uuid";
+	public static final String unArchiveStatus = "with status as (select uuid from (select hospital_number,hst.uuid,hiv_status,status_date,hst.archived,row_number() over (partition by hospital_number order by status_date desc) rnk from patient_person p inner join\r\n"
+			+ "hiv_status_tracker hst on p.uuid = hst.person_id where hospital_number = ? ) hivstatus where rnk = 2)\r\n"
+			+ "update hiv_status_tracker st set archived = ? from status t\r\n"
+			+ "where st.uuid = t.uuid";
 }
