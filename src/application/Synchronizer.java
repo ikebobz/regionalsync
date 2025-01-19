@@ -67,6 +67,9 @@ Hashtable<String,String> errors = new Hashtable<>();
 		this.uploadHTSClientData();
 		this.uploadHTSElicitationData();
 		this.uploadHTSStratificationData();
+		this.uploadCaseManagerData();
+		this.uploadCaseManagerPatientData();
+		this.uploadDsdDevolvementData();
 		this.alertOnComplete(this.errorCount);
 		try {
 			if(!insertcon.isClosed())
@@ -2093,7 +2096,7 @@ public void uploadHTSClientData()
 	this.updateProgressBar();
 	//this.updatePropertyFile();
 }
-public void CaseManagerData()
+public void uploadCaseManagerData()
 {
 	Platform.runLater(new Runnable() {
 
@@ -2165,7 +2168,7 @@ public void CaseManagerData()
 	this.updateProgressBar();
 	//this.updatePropertyFile();
 }
-public void CaseManagerPatientData()
+public void uploadCaseManagerPatientData()
 {
 	Platform.runLater(new Runnable() {
 
@@ -2237,7 +2240,7 @@ public void CaseManagerPatientData()
 	this.updateProgressBar();
 	//this.updatePropertyFile();
 }
-public void DsdDevolvementData()
+public void uploadDsdDevolvementData()
 {
 	Platform.runLater(new Runnable() {
 
